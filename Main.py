@@ -1,9 +1,9 @@
 import sys
+import win32com.client as win32
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWebEngineWidgets import *
 
 class MainPage(QWidget):
@@ -73,7 +73,26 @@ class MainPage(QWidget):
         shot2.save("C:\\Users\\Siddarth\\Desktop\\shot2.jpg", 'jpg')
 
     def Send_Mail(self):
-        print('Send mail')
+        outlook = win32.Dispatch('outlook.application')
+        mail = outlook.CreateItem(0)
+        # mail.To = 'shidds@gmail.com;siddarth3639@gmail.com'
+        mail.To = 'shidds@gmail.com'
+        mail.CC = "siddarth3639@gmail.com"
+        mail.BCC = "siddarthpatilgit@gmail.com"
+        mail.Subject = 'Test'
+        mail.Body = 'Automated Mail using Pyhton \n \n Next Line'
+        # mail.HTMLBody = '<h2>HTML Message body</h2>' #this field is optional
+
+        # To attach a file to the email (optional):
+        attachment1 = "C:\\Users\\Siddarth\\Desktop\\shot1.jpg"
+        attachment2 = "C:\\Users\\Siddarth\\Desktop\\shot2.jpg"
+        mail.Attachments.Add(attachment1)
+        mail.Attachments.Add(attachment2)
+
+        try:
+            mail.Send()
+        except:
+            print("An exception occurred")
 
 
 if __name__ == '__main__':
